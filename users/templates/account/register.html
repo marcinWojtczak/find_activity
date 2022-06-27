@@ -1,0 +1,26 @@
+{% extends "activity/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-12 mt-4">
+        <p>Already have an account? Then please <a href="#">Sign In</a></p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-12">
+        <form class="signup" id="signup_form" method="post" action="#">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <div class="d-grid gap-2">
+                <button class="mt-3 btn btn-dark btn-block" type="submit">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

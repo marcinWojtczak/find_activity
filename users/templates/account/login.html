@@ -1,0 +1,27 @@
+{% extends "activity/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-12">
+        <h1>Sign In</h1>
+        <p>If you have not created an account yet, then please
+            <a href="{% url 'register-page'%}">Sign Up</a> first.
+        </p>
+        
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-sm-12">
+        <form class="login" method="POST" action="{% url 'login-page' %}">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-grid gap-2">
+                <button class="mt-3 btn btn-dark primaryAction" type="submit">Sign In</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
