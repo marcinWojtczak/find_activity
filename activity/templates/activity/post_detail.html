@@ -1,0 +1,53 @@
+{% extends 'activity/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <div class='row mt-5'>
+        <div class="col-md-5 col-sm-6">
+             <a href="{% url 'posts-list' %}" class="btn btn-light">Home Page</a>
+         </div>
+    </div>   
+    <div class='row justify-content-center mt-3'>
+        <div class="col-md-5 col-sm-12 border-bottom ">
+            <p>
+                <strong>{{ post.author}} </strong> {{ post.created_on }}
+                {% if post.author == request.user %}
+                    <a href="{% url 'post-update' post.pk %}" style="color: #333;"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'post-delete' post.pk %}" style="color: #333;"><i class="fas fa-trash"></i></a>
+                {% endif %}
+                <h6>{{ post.title }}</h6>
+                <h6>Lokalizacja: {{ post.localization }}</h6>
+                <p>{{ post.content }}</p>
+            </p>
+        </div>
+    </div>
+
+    <div class='row justify-content-center mt-3 mb-5'>
+        <div class="col-md-5 col-sm-12">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form| crispy }}
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% for comment in comments %}
+    <div class='row justify-content-center mt-3 mb-5'>
+        <div class="col-md-5 col-sm-12 mb-5 border-bottom">
+            <p>
+                <strong>{{ comment.author }} </strong> {{ comment.created_on }}
+                {% if comment.author == request.user %}
+                    <a href="{% url 'comment-update' post.pk comment.pk %}"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'comment-delete' post.pk comment.pk %}"><i class="fas fa-trash"></i></a>
+                {% endif %}
+                <p>{{ comment.content }}</p>
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
