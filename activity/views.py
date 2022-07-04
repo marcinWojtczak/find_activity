@@ -1,5 +1,6 @@
 from . models import Post, Comment
 from . forms import PostForm, CommentForm
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import View
 from django.shortcuts import render
@@ -138,5 +139,18 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment=self.get_object()
         return self.request.user == comment.author
+
+
+class Search(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('query')
+        activity = Post.objects.filter(
+            Q(activity__icontains=query)
+        )
+
+        context = {
+            'activity': activity,
+        }
+        return render(request, 'activity/search.html', context)
 
 
